@@ -1,6 +1,10 @@
 __author__ = 'charlie'
 
+import pickle
+
 from preprocess import *
+
+from time import time
 
 from nltk import NaiveBayesClassifier
 from nltk.classify import accuracy
@@ -19,6 +23,8 @@ def print_result(_result, _i):
 
 if __name__ == '__main__':
     # TODO: smoothing?  Don't think this is done automatically by NLTK
+
+    print "Loading data..."
     documents = load_data_and_labels()
 
     features, labels = load_data_and_labels()
@@ -26,6 +32,8 @@ if __name__ == '__main__':
 
     results = []
     i = 0
+
+    print "Training models..."
     for train_inds, test_inds in folds:
         i += 1
         result = {}
@@ -41,3 +49,13 @@ if __name__ == '__main__':
 
         results.append(result)
         print_result(result, i)
+
+    timestamp = int(time() * 1000)
+    results_fi = 'naive_bayes_results-{}.pickle'.format(timestamp)
+    results_file = os.path.join('results', results_fi)
+
+    print "Saving results to {}".format(results_file)
+    with open(results_file, 'w+') as fi:
+        pickle.dump(results, fi)
+
+    print "Done!"
