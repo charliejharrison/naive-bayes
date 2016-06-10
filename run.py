@@ -25,9 +25,10 @@ if __name__ == '__main__':
     # TODO: smoothing?  Don't think this is done automatically by NLTK
 
     print "Loading data..."
-    documents = load_data_and_labels()
 
-    features, labels = load_data_and_labels()
+    num_words = None
+
+    features, labels = load_data_and_labels(num_words)
     folds = LabelKFold(labels, 10)
 
     results = []
