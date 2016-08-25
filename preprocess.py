@@ -1,10 +1,4 @@
-"""<DOCSTRING>
-"""
-
-__author__ = 'wah'
-
 import os.path
-import string.punctuation
 
 from nltk import word_tokenize
 from nltk import FreqDist
@@ -12,17 +6,17 @@ from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 
 STOPWORDS = stopwords.words('english')
-PUNCTRANS = {ord(c): None for c in string.punctuation}
-
 lemmatizer = WordNetLemmatizer()
+
 flatten = lambda ar: [a for b in ar for a in b]
 
 
 def build_vocab(_posts, _num_words=None):
     """
-    Build a vocabulary for all posts.  This can be used to limit the number of features,
+    Build a vocabulary for all posts.  This can be used to or to limit the number of features,
     or produce more condensed data structures.
     """
+    # TODO: rank words by TFIDF instead of frequency!
     vocab = FreqDist(flatten(_posts))
     vocab = list(vocab)[:_num_words]
     return vocab
@@ -46,8 +40,7 @@ def clean_raw_text(_text):
     # TODO: look into "internet savvy"/"Twitter aware" tokenizers - these can include smiley faces,
     #  slang etc.
     tokens = word_tokenize(_text.lower())
-    tokens = [t.translate(PUNCTRANS) for t in tokens]
-    tokens = [t for t in tokens if t and t not in STOPWORDS]  # 'nt' not in stopwords; are others missing?
+    tokens = [t for t in tokens if t not in STOPWORDS]
     lemmas = [lemmatizer.lemmatize(t) for t in tokens]
     return lemmas
 
@@ -69,7 +62,7 @@ def read_and_clean_posts(_fi_path, _num_words=None):
     return lemma_lists
 
 
-def load_data_and_labels(_num_words=None):
+def load_data_and_labels(_num_words=None, _positive_path="elefriends-1/details_of_sh-raw.txt", _negative_path="elefriends-1/unflagged-raw.txt"):
     """
     Run the whole data preparation pipeline
 
@@ -77,8 +70,8 @@ def load_data_and_labels(_num_words=None):
     memory or performance is a problem
     """
     DATA_PATH = "/Volumes/data/Mind/data_dumps"
-    POSITIVE = os.path.join(DATA_PATH, "details_of_sh-raw.txt")
-    NEGATIVE = os.path.join(DATA_PATH, "unflagged-raw.txt")
+    POSITIVE = os.path.join(DATA_PATH, _positive_path)
+    NEGATIVE = os.path.join(DATA_PATH, _negative_path)
 
     # Load data from files
     positive_examples = read_and_clean_posts(POSITIVE, _num_words)
