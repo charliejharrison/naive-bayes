@@ -3,7 +3,7 @@
 Mega-simple Naive Bayes classification of posts, using NLTK's built in
 NaiveBayesClassifier.
 
-Features are binary word occurrences.  Posts are tokenized and lemmatized.
+Features are binary word occurrences.  Posts are tokenized and lemmatized, and stopwords are removed, all using standard NLTK/wordnet modules.
 
 Performance in 10-fold cross validation classifying posts flagged with
 self-harm/suicide content vs. unflagged posts:
