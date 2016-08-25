@@ -8,6 +8,7 @@ Features are binary word occurrences.  Posts are tokenized and lemmatized.
 Performance in 10-fold cross validation classifying posts flagged with
 self-harm/suicide content vs. unflagged posts:
 
+```
 Fold 0
 	Accuracy = 0.9067796610169492
 	Precision = 0.4901185770750988
@@ -105,3 +106,4 @@ Fold 9
 	F-score = 0.4656616415410385
 	Type 1 err = 0.6567901234567901
 	Type 2 err = 0.030867792661619105
+```
