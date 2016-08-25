@@ -3,7 +3,8 @@
 
 __author__ = 'wah'
 
-import os.path.join
+import os.path
+import string.punctuation
 
 from nltk import word_tokenize
 from nltk import FreqDist
@@ -11,17 +12,17 @@ from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 
 STOPWORDS = stopwords.words('english')
-lemmatizer = WordNetLemmatizer()
+PUNCTRANS = {ord(c): None for c in string.punctuation}
 
+lemmatizer = WordNetLemmatizer()
 flatten = lambda ar: [a for b in ar for a in b]
 
 
 def build_vocab(_posts, _num_words=None):
     """
-    Build a vocabulary for all posts.  This can be used to or to limit the number of features,
+    Build a vocabulary for all posts.  This can be used to limit the number of features,
     or produce more condensed data structures.
     """
-    # TODO: rank words by TFIDF instead of frequency!
     vocab = FreqDist(flatten(_posts))
     vocab = list(vocab)[:_num_words]
     return vocab
@@ -45,7 +46,8 @@ def clean_raw_text(_text):
     # TODO: look into "internet savvy"/"Twitter aware" tokenizers - these can include smiley faces,
     #  slang etc.
     tokens = word_tokenize(_text.lower())
-    tokens = [t for t in tokens if t not in STOPWORDS]
+    tokens = [t.translate(PUNCTRANS) for t in tokens]
+    tokens = [t for t in tokens if t and t not in STOPWORDS]  # 'nt' not in stopwords; are others missing?
     lemmas = [lemmatizer.lemmatize(t) for t in tokens]
     return lemmas
 
@@ -76,7 +78,7 @@ def load_data_and_labels(_num_words=None):
     """
     DATA_PATH = "/Volumes/data/Mind/data_dumps"
     POSITIVE = os.path.join(DATA_PATH, "details_of_sh-raw.txt")
-    NEGATIVE = os.path.join(DATA_PATH, "unflagged-raw.tsv")
+    NEGATIVE = os.path.join(DATA_PATH, "unflagged-raw.txt")
 
     # Load data from files
     positive_examples = read_and_clean_posts(POSITIVE, _num_words)
