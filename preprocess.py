@@ -62,14 +62,14 @@ def read_and_clean_posts(_fi_path, _num_words=None):
     return lemma_lists
 
 
-def load_data_and_labels(_num_words=None, _positive_path="elefriends-1/details_of_sh-raw.txt", _negative_path="elefriends-1/unflagged-raw.txt"):
+def load_data_and_labels(_num_words=None, _positive_path="flagged_suicide_raw.txt", _negative_path="unflagged_raw.txt"):
     """
     Run the whole data preparation pipeline
 
     :param num_words: maximum number of word features to include in the vocabulary.  Set if
     memory or performance is a problem
     """
-    DATA_PATH = "/Volumes/data/Mind/data_dumps"
+    DATA_PATH = "data"
     POSITIVE = os.path.join(DATA_PATH, _positive_path)
     NEGATIVE = os.path.join(DATA_PATH, _negative_path)
 
