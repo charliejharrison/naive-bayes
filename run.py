@@ -7,6 +7,7 @@ from sklearn.cross_validation import StratifiedKFold
 
 import numpy as np
 import os.path
+from os import makedirs
 import pickle
 
 import preprocess
@@ -93,6 +94,9 @@ def pickle_results(_results):
     timestamp = int(time() * 1000)
     results_fi = 'naive_bayes_results-{}.pickle'.format(timestamp)
     results_file = os.path.join('results', results_fi)
+    results_dir = os.path.dirname(results_file)
+    if not os.path.exists(results_dir):
+        makedirs(results_dir)
 
     print("Saving results to {}".format(results_file))
     with open(results_file, 'wb') as fi:
